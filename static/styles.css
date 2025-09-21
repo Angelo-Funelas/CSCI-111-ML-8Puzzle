@@ -1,0 +1,32 @@
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    grid-template-rows: repeat(4, auto);
+    grid-gap: 2px;
+    padding: 2px;
+    width: 20em;
+    aspect-ratio: 1;
+    margin: 0 auto;
+    border: 2px solid black;
+}
+#game-board > div {
+    background-color: #93d2d3;
+    text-align: center;
+    padding: 1em;
+    font-family: sans-serif;
+}
+#controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2em;
+}
+button {
+    border: none;
+    outline: none;
+    padding: 1em 2em;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #e5e5e5;
+}
