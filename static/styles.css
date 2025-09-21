@@ -15,6 +15,38 @@
     padding: 1em;
     font-family: sans-serif;
 }
+@keyframes moveUp {
+    from {
+        translate: 0 -100%;
+    }
+    to {
+        translate: 0 0;
+    }
+}
+@keyframes moveDown {
+    from {
+        translate: 0 100%;
+    }
+    to {
+        translate: 0 0;
+    }
+}
+@keyframes moveLeft {
+    from {
+        translate: 100% 0;
+    }
+    to {
+        translate: 0 0;
+    }
+}
+@keyframes moveRight {
+    from {
+        translate: -100% 0;
+    }
+    to {
+        translate: 0 0;
+    }
+}
 #controls {
     display: flex;
     justify-content: center;
