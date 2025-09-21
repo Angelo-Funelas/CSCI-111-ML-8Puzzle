@@ -78,3 +78,9 @@ button:hover {
 p {
     text-align: center;
 }
+#miku {
+    position: fixed;
+    bottom: 2em;
+    right: 10em;
+    width: 20em;
+}
