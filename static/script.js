@@ -51,7 +51,7 @@ function shuffleBoard(board) {
 document.getElementById("button-shuffle").addEventListener('click', () => {
     shuffleBoard(mainBoard)
 })
-initBoard(mainBoard, 5)
+initBoard(mainBoard, 3)
 
 const animationDirections = [
     ["", "moveRight", ""],
@@ -105,3 +105,7 @@ document.addEventListener("keydown", (e) => {
         move(mainBoard, -1, 0)
     }
 })
+
+function h(board) {
+    
+}
