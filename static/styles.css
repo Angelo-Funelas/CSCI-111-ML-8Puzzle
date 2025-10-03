@@ -18,15 +18,19 @@ nav > h1 {
     grid-template-rows: repeat(4, auto);
     grid-gap: 2px;
     padding: 2px;
-    width: 20em;
+    width: 20rem;
     aspect-ratio: 1;
     margin: 0 auto;
     border: 2px solid black;
+    font-size: 2em;
 }
 #game-board > div {
     background-color: #95d2d3;
+    color: white;
     text-align: center;
     padding: 1em;
+    font-weight: bold;
+    overflow: hidden;
 }
 @keyframes moveUp {
     from {
@@ -89,9 +93,9 @@ p {
 }
 #statistics {
     margin: 0 auto;
-    width: 20rem;
+    width: 25rem;
     display: grid;
-    grid-template-columns: repeat(2, auto);
+    grid-template-columns: auto 10rem;
     font-size: 1.5rem;
 }
 #statistics > p {

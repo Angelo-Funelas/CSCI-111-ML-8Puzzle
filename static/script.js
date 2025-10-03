@@ -57,10 +57,14 @@ document.getElementById("button-shuffle").addEventListener('click', () => {
 
 initBoard(mainBoard, 3)
 document.getElementById("button-size-3").addEventListener("click", (e) => {
+    cancelMoves()
     initBoard(mainBoard, 3)
+    mainBoard.style.fontSize = "2rem"
 })
 document.getElementById("button-size-4").addEventListener("click", (e) => {
+    cancelMoves()
     initBoard(mainBoard, 4)
+    mainBoard.style.fontSize = "1.5rem"
 })
 
 const animationDirections = [
@@ -157,7 +161,10 @@ document.getElementById("button-solve").addEventListener("click", (e) => {
         algoWorker = new Worker("/static/GreedyEuclidian.js")
     }
     algoWorker.postMessage(current_board_state)
+    const startTime = new Date()
+    let endTime = null
     algoWorker.onmessage = (e) => {
+        endTime = new Date()
         console.log(e.data)
         const moves = e.data[0]
         const traversed = e.data[1]
@@ -166,13 +173,20 @@ document.getElementById("button-solve").addEventListener("click", (e) => {
             console.log("No Moves Generated")
             return
         }
-        animateValue(statistics.querySelector("p:nth-child(2)"), time, 1000, "ms")
-        animateValue(statistics.querySelector("p:nth-child(4)"), traversed, traversed*1.5)
+        statistics.querySelector("p:nth-child(2)").innerText = `${time}ms`
+        const travAnimTime = Math.min(traversed*1.5, 6*1000)
+        animateValue(statistics.querySelector("p:nth-child(4)"), traversed, travAnimTime)
         setTimeout(() => {
             animateValue(statistics.querySelector("p:nth-child(6)"), moves.length, moves.length*20)
-        }, traversed*1.5)
+        }, travAnimTime)
         performMoves(moves, 250)
     }
+    function trackTime() {
+        const now = new Date()
+        statistics.querySelector("p:nth-child(2)").innerText = `${now-startTime}ms`
+        if (!endTime) requestAnimationFrame(trackTime)
+    }
+    requestAnimationFrame(trackTime)
 })
 
 let scheduledMoves = []
