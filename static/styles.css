@@ -66,11 +66,13 @@ nav > h1 {
     align-items: center;
     margin: 2em;
 }
-button {
+button,select {
     border: none;
     outline: none;
     padding: 1em 2em;
     cursor: pointer;
+    background-color: #ececec;
+    margin: .2em;
 }
 button:hover {
     background-color: #e5e5e5;

@@ -1,3 +1,5 @@
+import { AStar } from "./AStar.js";
+
 const mainBoard = document.getElementById("game-board");
 function initBoard(board, count) {
     board.style.gridTemplateColumns = `repeat(${count}, 1fr)`;
@@ -35,6 +37,7 @@ function initBoard(board, count) {
 }
 
 function shuffleBoard(board) {
+    cancelMoves()
     for (let i=0; i<500; i++) {
         const rnd = Math.floor(Math.random()*4);
         if (rnd == 0) {
@@ -62,10 +65,9 @@ function move(board, x, y) {
     const board_row_count = board.board.length
     const board_col_count = board.board[0].length
 
-
     const empty = board.querySelector(".empty")
-    empty_row = parseInt(empty.style.gridRow)
-    empty_col = parseInt(empty.style.gridColumn)
+    let empty_row = parseInt(empty.style.gridRow)
+    let empty_col = parseInt(empty.style.gridColumn)
     if (
         0 > empty_row-1+y ||
         board_row_count <= empty_row-1+y ||
@@ -106,6 +108,52 @@ document.addEventListener("keydown", (e) => {
     }
 })
 
-function h(board) {
-    
+function stringifyBoard(board) {
+    let current_board_state = ""
+    for (const row of board) {
+        for (const cell of row) {
+            current_board_state += cell.className == "empty" ? "0" : cell.innerText
+        }
+    }
+    return current_board_state
+}
+
+document.getElementById("button-solve").addEventListener("click", (e) => {
+    const selected_algorithm = document.getElementById("selected-algo").value
+    let current_board_state = stringifyBoard(mainBoard.board)
+    if (selected_algorithm == "astar") {
+        const moves = AStar(current_board_state)
+        console.log(moves)
+        performMoves(moves)
+    }
+})
+
+let scheduledMoves = []
+
+function cancelMoves() {
+    for (const move of scheduledMoves) {
+        clearTimeout(move)
+    }
+}
+
+function scheduleMove(movex, movey, time) {
+    const scheduledMove = setTimeout(() => {
+        move(mainBoard, movex, movey)
+    }, time);
+    scheduledMoves.push(scheduledMove)
+}
+
+function performMoves(moves) {
+    for (let i=0; i<moves.length;i++) {
+        const step = moves[i]
+        if (step == "up") {
+            scheduleMove(0, 1, i*500)
+        } else if (step == "down") {
+            scheduleMove(0, -1, i*500)
+        } else if (step == "left") {
+            scheduleMove(1, 0, i*500)
+        } else if (step == "right") {
+            scheduleMove(-1, 0, i*500)
+        }
+    }
 }
