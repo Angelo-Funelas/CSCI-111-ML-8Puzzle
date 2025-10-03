@@ -71,13 +71,18 @@ nav > h1 {
 input {
     width: 20rem;
 }
-button,select,input {
+input[type=checkbox] {
+    width: auto;
+    margin-left: .5rem;
+}
+button,select,input,label {
     border: none;
     outline: none;
     padding: 1em 2em;
     cursor: pointer;
     background-color: #ececec;
     margin: .2em;
+    font-size: 1rem;
 }
 button:hover {
     background-color: #e5e5e5;

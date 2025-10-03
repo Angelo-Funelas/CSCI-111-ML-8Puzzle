@@ -86,6 +86,17 @@ function move(board, x, y) {
     empty.style.gridRow = empty_row+y
     empty.style.gridColumn = empty_col+x
 
+    const distColoring = document.getElementById("dist-color").checked
+    if (distColoring) {
+        const num = parseInt(to_swap.innerText)-1
+        const to_swap_trow = Math.floor(num/board_col_count)
+        const to_swap_tcol =num%board_col_count
+        const maxDist = (board_col_count-1)+(board_row_count-1)
+        to_swap.style.backgroundColor = `${manhattanColor(empty_row-1, empty_col-1, to_swap_trow, to_swap_tcol, maxDist)}`
+    } else {
+        to_swap.style.backgroundColor = ""
+    }
+
     const animName = animationDirections[x+1][y+1]
     to_swap.style.animation = `.2s linear ${animName}`
     to_swap.addEventListener("animationend", (e) => {
@@ -95,6 +106,21 @@ function move(board, x, y) {
     board.board[empty_row-1+y][empty_col-1+x] = empty
     board.board[empty_row-1][empty_col-1] = to_swap
 }
+
+function manhattanColor(x, y, tx, ty, max) {
+  const dist = Math.abs(x - tx) + Math.abs(y - ty);
+  const ratio = Math.min(dist / max, 1);
+
+  const start = { r: 0x95, g: 0xd2, b: 0xd3 };
+  const end   = { r: 0xc0, g: 0x38, b: 0x4e };
+
+  const r = Math.round(start.r + (end.r - start.r) * ratio);
+  const g = Math.round(start.g + (end.g - start.g) * ratio);
+  const b = Math.round(start.b + (end.b - start.b) * ratio);
+
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
 
 const controls = [
     ["W", "w", "ArrowUp"],
@@ -142,6 +168,9 @@ function animateValue(element, value, time, endStr="") {
 }
 
 const statistics = document.getElementById("statistics")
+const timeStat = statistics.querySelector("p:nth-child(2)")
+const travStat = statistics.querySelector("p:nth-child(4)")
+const moveStat = statistics.querySelector("p:nth-child(6)")
 document.getElementById("button-solve").addEventListener("click", (e) => {
     const selected_algorithm = document.getElementById("selected-algo").value
     let current_board_state = stringifyBoard(mainBoard.board)
@@ -158,6 +187,8 @@ document.getElementById("button-solve").addEventListener("click", (e) => {
     algoWorker.postMessage(current_board_state)
     const startTime = new Date()
     let endTime = null
+    travStat.innerText = 0
+    moveStat.innerText = 0
     algoWorker.onmessage = (e) => {
         endTime = new Date()
         console.log(e.data)
@@ -168,17 +199,17 @@ document.getElementById("button-solve").addEventListener("click", (e) => {
             console.log("No Moves Generated")
             return
         }
-        statistics.querySelector("p:nth-child(2)").innerText = `${time}ms`
-        const travAnimTime = Math.min(traversed*1.5, 6*1000)
-        animateValue(statistics.querySelector("p:nth-child(4)"), traversed, travAnimTime)
+        timeStat.innerText = `${time}ms`
+        const travAnimTime = Math.min(traversed*1.5, 3*1000)
+        animateValue(travStat, traversed, travAnimTime)
         setTimeout(() => {
-            animateValue(statistics.querySelector("p:nth-child(6)"), moves.length, moves.length*20)
+            animateValue(moveStat, moves.length, moves.length*20)
         }, travAnimTime)
         performMoves(moves, 250)
     }
     function trackTime() {
         const now = new Date()
-        statistics.querySelector("p:nth-child(2)").innerText = `${now-startTime}ms`
+        timeStat.innerText = `${now-startTime}ms`
         if (!endTime) requestAnimationFrame(trackTime)
     }
     requestAnimationFrame(trackTime)
