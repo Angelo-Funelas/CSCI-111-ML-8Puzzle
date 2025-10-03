@@ -1,6 +1,7 @@
 import { AStarManhattan } from "./AStarManhattan.js";
 import { AStarEuclidian } from "./AStarEuclidian.js";
 import { GreedyManhattan } from "./GreedyManhattan.js";
+import { GreedyEuclidian } from "./GreedyEuclidian.js";
 
 const mainBoard = document.getElementById("game-board");
 function initBoard(board, count) {
@@ -131,6 +132,8 @@ document.getElementById("button-solve").addEventListener("click", (e) => {
         moves = AStarEuclidian(current_board_state)
     } else if (selected_algorithm == "greedy-manhattan") {
         moves = GreedyManhattan(current_board_state)
+    } else if (selected_algorithm == "greedy-euclidian") {
+        moves = GreedyEuclidian(current_board_state)
     }
     if (moves.length < 1) {
         console.log("No Moves Generated")
@@ -172,13 +175,16 @@ function performMoves(moves, interval) {
 
 let delayedSetState = null
 const initialStateInput = document.getElementById("initial-state")
+const iniitializeButton = document.getElementById("button-initialize")
 initialStateInput.addEventListener("keydown", (e) => {
     if (delayedSetState) clearInterval(delayedSetState)
     delayedSetState = setTimeout(() => {
         setBoardState(mainBoard, e.target.value)
     }, 100);
 })
-
+iniitializeButton.addEventListener("click", (e) => {
+    setBoardState(mainBoard, initialStateInput.value)
+})
 function setBoardState(board, state) {
     state = state.split(",")
     let size = Math.sqrt(state.length)
