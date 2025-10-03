@@ -13,26 +13,21 @@ function initBoard(board, count) {
         board.board.push(row)
     }
 
-    for (let i=0; i<(count**2)-1; i++) {
+    for (let i=0; i<(count**2); i++) {
         const tile = document.createElement("div");
-        
+        if (i==(count**2)-1) {
+            tile.style.backgroundColor = "white";
+            tile.className = "empty"
+        } else {
+            tile.innerText = i+1
+        }
         const row = Math.floor(i/count)
         const col = (i%count)
-        tile.style.gridRow = row+1
-        tile.style.gridColumn = col+1
+        tile.style.gridArea = `${row+1} / ${col+1}`
         board.board[row][col] = tile
-
-        tile.innerText = i+1
         board.append(tile);
     }
-    const empty = document.createElement("div");
-    empty.style.backgroundColor = "white";
-    empty.className = "empty"
-    empty.style.gridArea = `${count} / ${count}`
-    board.append(empty);
-
     console.log(board, `initialized ${count}x${count} board`)
-    console.log(board.board)
 }
 
 function shuffleBoard(board) {
