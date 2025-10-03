@@ -61,15 +61,13 @@ nav > h1 {
     }
 }
 #controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    text-align: center;
     margin: 2em;
 }
 input {
-    display: block;
+    width: 20rem;
 }
-button,select, input {
+button,select,input {
     border: none;
     outline: none;
     padding: 1em 2em;

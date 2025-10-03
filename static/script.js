@@ -55,6 +55,7 @@ function shuffleBoard(board) {
 }
 document.getElementById("button-shuffle").addEventListener('click', () => {
     shuffleBoard(mainBoard)
+    initialStateInput.value = stringifyBoard(mainBoard.board)
 })
 initBoard(mainBoard, 3)
 
@@ -166,5 +167,46 @@ function performMoves(moves, interval) {
         } else if (step == "right") {
             scheduleMove(-1, 0, i*interval)
         }
+    }
+}
+
+let delayedSetState = null
+const initialStateInput = document.getElementById("initial-state")
+initialStateInput.addEventListener("keydown", (e) => {
+    if (delayedSetState) clearInterval(delayedSetState)
+    delayedSetState = setTimeout(() => {
+        setBoardState(mainBoard, e.target.value)
+    }, 100);
+})
+
+function setBoardState(board, state) {
+    state = state.split(",")
+    let size = Math.sqrt(state.length)
+    if (!Number.isInteger(size) || size < 2) return;
+    cancelMoves()
+    board.board = []
+    board.innerHTML = ""
+    for (let i=0; i<size; i++) {
+        const row = []
+        for (let j=0; j<size; j++) {
+            row.push(undefined)
+        }
+        board.board.push(row)
+    }
+
+    for (let i=0; i<state.length; i++) {
+        const cell = state[i]
+        const row = Math.floor(i/size)
+        const col = (i%size)
+        const tile = document.createElement("div");
+        if (cell == 0) {
+            tile.style.backgroundColor = "white";
+            tile.className = "empty"
+        } else {
+            tile.innerText = cell
+        }
+        board.board[row][col] = tile
+        tile.style.gridArea = `${row+1} / ${col+1}`
+        board.append(tile);
     }
 }
