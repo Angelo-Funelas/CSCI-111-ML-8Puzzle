@@ -1,5 +1,6 @@
 const mainBoard = document.getElementById("game-board");
 function initBoard(board, count) {
+    board.innerHTML = ""
     board.style.gridTemplateColumns = `repeat(${count}, 1fr)`;
     board.style.gridTemplateRows = `repeat(${count}, 1fr)`;
 
@@ -53,7 +54,7 @@ document.getElementById("button-shuffle").addEventListener('click', () => {
     shuffleBoard(mainBoard)
     initialStateInput.value = stringifyBoard(mainBoard.board)
 })
-initBoard(mainBoard, 4)
+initBoard(mainBoard, 3)
 
 const animationDirections = [
     ["", "moveRight", ""],
