@@ -139,14 +139,17 @@ function moveState(state, direction) {
 const reversedDir = new Map([["up", "down"],["down", "up"],["left","right"],["right","left"]])
 
 function AStarEuclidian(initialState) {
+    const timeStart = new Date()
     const queue = new MinHeap()
     const stateMap = new Map();
     let targetState = ""
+    let traversed = 0
     for (let i=1; i<initialState.split(",").length; i++) {
         targetState += `${i},`
     }
     targetState+="0"
     function addNode(h, path_cost, state, dir) {
+        traversed++
         queue.insert([h+path_cost, state])
         stateMap.set(state, {
             "cost": path_cost,
@@ -184,13 +187,14 @@ function AStarEuclidian(initialState) {
         cur_node = stateMap.get(nextState)
     }
     path.reverse()
-    return path
+    const timeFinish = new Date()
+    return [path, traversed, (timeFinish-timeStart)]
 }
 
 self.onmessage = function(e) {
   const initialState = e.data;
 
-  const path = AStarEuclidian(initialState);
+  const res = AStarEuclidian(initialState);
 
-  self.postMessage(path);
+  self.postMessage(res);
 };

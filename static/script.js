@@ -54,7 +54,14 @@ document.getElementById("button-shuffle").addEventListener('click', () => {
     shuffleBoard(mainBoard)
     initialStateInput.value = stringifyBoard(mainBoard.board)
 })
+
 initBoard(mainBoard, 3)
+document.getElementById("button-size-3").addEventListener("click", (e) => {
+    initBoard(mainBoard, 3)
+})
+document.getElementById("button-size-4").addEventListener("click", (e) => {
+    initBoard(mainBoard, 4)
+})
 
 const animationDirections = [
     ["", "moveRight", ""],
@@ -118,6 +125,24 @@ function stringifyBoard(board) {
     return current_board_state.join(',')
 }
 
+function animateValue(element, value, time, endStr="") {
+    let start = 0;
+    let startTime = null;
+
+    function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime) / time, 1);
+        element.innerText = `${Math.floor(progress * value)}${endStr}`;
+
+        if (progress < 1) {
+            requestAnimationFrame(step);
+        }
+    }
+
+    requestAnimationFrame(step);
+}
+
+const statistics = document.getElementById("statistics")
 document.getElementById("button-solve").addEventListener("click", (e) => {
     const selected_algorithm = document.getElementById("selected-algo").value
     let current_board_state = stringifyBoard(mainBoard.board)
@@ -133,12 +158,19 @@ document.getElementById("button-solve").addEventListener("click", (e) => {
     }
     algoWorker.postMessage(current_board_state)
     algoWorker.onmessage = (e) => {
-        const moves = e.data
+        console.log(e.data)
+        const moves = e.data[0]
+        const traversed = e.data[1]
+        const time = e.data[2]
         if (moves.length < 1) {
             console.log("No Moves Generated")
             return
         }
-        console.log(moves)
+        animateValue(statistics.querySelector("p:nth-child(2)"), time, 1000, "ms")
+        animateValue(statistics.querySelector("p:nth-child(4)"), traversed, traversed*1.5)
+        setTimeout(() => {
+            animateValue(statistics.querySelector("p:nth-child(6)"), moves.length, moves.length*20)
+        }, traversed*1.5)
         performMoves(moves, 250)
     }
 })
