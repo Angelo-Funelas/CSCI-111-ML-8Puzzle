@@ -163,32 +163,36 @@ function AStarManhattan(initialState) {
     addNode(initial_h, 0, initialState, null)
 
     console.log("Performing Traversal...")
-    while (queue.heap.length > 0) {
-        const current_node = queue.removeMin()
-        const current_state = current_node[1]
-        if (current_state == targetState) break
-        const neighborStates = getNextStates(current_state)
-        const path_cost = stateMap.get(current_state).cost
-        for (const [state, dir] of neighborStates) {
-            const heuristic = calcHeuristic(state)
-            const found_better_path = stateMap.has(state) && stateMap.get(state).cost > path_cost+1
-            if (!stateMap.has(state) || found_better_path) {
-                addNode(heuristic, path_cost+1, state, dir)
-            }
-        }
+    try {
+      while (queue.heap.length > 0) {
+          const current_node = queue.removeMin()
+          const current_state = current_node[1]
+          if (current_state == targetState) break
+          const neighborStates = getNextStates(current_state)
+          const path_cost = stateMap.get(current_state).cost
+          for (const [state, dir] of neighborStates) {
+              const heuristic = calcHeuristic(state)
+              const found_better_path = stateMap.has(state) && stateMap.get(state).cost > path_cost+1
+              if (!stateMap.has(state) || found_better_path) {
+                  addNode(heuristic, path_cost+1, state, dir)
+              }
+          }
+      }
+      console.log("Backtracking Path...")
+      let path = []
+      let cur_node = stateMap.get(targetState)
+      while (cur_node.state !== initialState) {
+          path.push(cur_node.dir)
+          const revDir = reversedDir.get(cur_node.dir)
+          const nextState = moveState(cur_node.state, revDir)
+          cur_node = stateMap.get(nextState)
+      }
+      path.reverse()
+      const timeFinish = new Date()
+      return [path, traversed, (timeFinish-timeStart)]
+    } catch (err) {
+      self.postMessage({"error": err});
     }
-    console.log("Backtracking Path...")
-    let path = []
-    let cur_node = stateMap.get(targetState)
-    while (cur_node.state !== initialState) {
-        path.push(cur_node.dir)
-        const revDir = reversedDir.get(cur_node.dir)
-        const nextState = moveState(cur_node.state, revDir)
-        cur_node = stateMap.get(nextState)
-    }
-    path.reverse()
-    const timeFinish = new Date()
-    return [path, traversed, (timeFinish-timeStart)]
 }
 
 self.onmessage = function(e) {

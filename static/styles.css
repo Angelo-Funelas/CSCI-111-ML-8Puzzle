@@ -2,6 +2,7 @@ html, body {
     font-family: sans-serif;
     margin: 0;
     padding: 0;
+    margin-bottom: 10rem;
 }
 nav {
     background-color: #95d2d3;
@@ -65,6 +66,7 @@ nav > h1 {
     }
 }
 #controls {
+    display: block;
     text-align: center;
     margin: 2em;
 }
@@ -111,4 +113,26 @@ p {
 #statistics > p:nth-child(odd) {
     background-color: #95d2d3;
     color: white;
+}
+#button-solve {
+    width: 8rem;
+}
+#button-solve:disabled {
+    background-color: #c0384e;
+    color: white;
+    cursor: not-allowed;
+}
+#message {
+    display: none;
+    background-color: #c0384e;
+    width: 20rem;
+    margin: 1rem auto;
+    padding: .5rem;
+    color: white;
+    animation: fadeOut 1s linear 3s 1 normal both;
+    animation: name duration timing-function delay iteration-count direction fill-mode;
+}
+@keyframes fadeOut {
+    from {opacity: 1;}
+    to {opacity: 0;}
 }

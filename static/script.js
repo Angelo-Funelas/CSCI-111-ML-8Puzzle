@@ -171,7 +171,12 @@ const statistics = document.getElementById("statistics")
 const timeStat = statistics.querySelector("p:nth-child(2)")
 const travStat = statistics.querySelector("p:nth-child(4)")
 const moveStat = statistics.querySelector("p:nth-child(6)")
-document.getElementById("button-solve").addEventListener("click", (e) => {
+const solveButton = document.getElementById("button-solve")
+const errorMsg = document.getElementById("message")
+errorMsg.addEventListener("animationend", (e) => {
+    e.currentTarget.style.display = "none"
+})
+solveButton.addEventListener("click", (e) => {
     const selected_algorithm = document.getElementById("selected-algo").value
     let current_board_state = stringifyBoard(mainBoard.board)
     let algoWorker = null
@@ -184,6 +189,10 @@ document.getElementById("button-solve").addEventListener("click", (e) => {
     } else if (selected_algorithm == "greedy-euclidian") {
         algoWorker = new Worker("/static/GreedyEuclidian.js")
     }
+    if (!algoWorker) return
+    cancelMoves()
+    solveButton.disabled = true
+    solveButton.innerText = "Solving..."
     algoWorker.postMessage(current_board_state)
     const startTime = new Date()
     let endTime = null
@@ -192,11 +201,20 @@ document.getElementById("button-solve").addEventListener("click", (e) => {
     algoWorker.onmessage = (e) => {
         endTime = new Date()
         console.log(e.data)
+        if (e.data["error"]) {
+            errorMsg.innerText = e.data["error"]
+            errorMsg.style.display = "block"
+            solveButton.disabled = false
+            solveButton.innerText = "Solve"
+            return
+        }
         const moves = e.data[0]
         const traversed = e.data[1]
         const time = e.data[2]
         if (moves.length < 1) {
             console.log("No Moves Generated")
+            solveButton.disabled = false
+            solveButton.innerText = "Solve"
             return
         }
         timeStat.innerText = `${time}ms`
@@ -206,6 +224,8 @@ document.getElementById("button-solve").addEventListener("click", (e) => {
             animateValue(moveStat, moves.length, moves.length*20)
         }, travAnimTime)
         performMoves(moves, 250)
+        solveButton.disabled = false
+        solveButton.innerText = "Solve"
     }
     function trackTime() {
         const now = new Date()
