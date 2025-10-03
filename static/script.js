@@ -1,8 +1,3 @@
-import { AStarManhattan } from "./AStarManhattan.js";
-import { AStarEuclidian } from "./AStarEuclidian.js";
-import { GreedyManhattan } from "./GreedyManhattan.js";
-import { GreedyEuclidian } from "./GreedyEuclidian.js";
-
 const mainBoard = document.getElementById("game-board");
 function initBoard(board, count) {
     board.style.gridTemplateColumns = `repeat(${count}, 1fr)`;
@@ -58,7 +53,7 @@ document.getElementById("button-shuffle").addEventListener('click', () => {
     shuffleBoard(mainBoard)
     initialStateInput.value = stringifyBoard(mainBoard.board)
 })
-initBoard(mainBoard, 3)
+initBoard(mainBoard, 4)
 
 const animationDirections = [
     ["", "moveRight", ""],
@@ -125,22 +120,26 @@ function stringifyBoard(board) {
 document.getElementById("button-solve").addEventListener("click", (e) => {
     const selected_algorithm = document.getElementById("selected-algo").value
     let current_board_state = stringifyBoard(mainBoard.board)
-    let moves = []
+    let algoWorker = null
     if (selected_algorithm == "astar-manhattan") {
-        moves = AStarManhattan(current_board_state)
+        algoWorker = new Worker("/static/AStarManhattan.js")
     } else if (selected_algorithm == "astar-euclidian") {
-        moves = AStarEuclidian(current_board_state)
+        algoWorker = new Worker("/static/AStarEuclidian.js")
     } else if (selected_algorithm == "greedy-manhattan") {
-        moves = GreedyManhattan(current_board_state)
+        algoWorker = new Worker("/static/GreedyManhattan.js")
     } else if (selected_algorithm == "greedy-euclidian") {
-        moves = GreedyEuclidian(current_board_state)
+        algoWorker = new Worker("/static/GreedyEuclidian.js")
     }
-    if (moves.length < 1) {
-        console.log("No Moves Generated")
-        return
+    algoWorker.postMessage(current_board_state)
+    algoWorker.onmessage = (e) => {
+        const moves = e.data
+        if (moves.length < 1) {
+            console.log("No Moves Generated")
+            return
+        }
+        console.log(moves)
+        performMoves(moves, 250)
     }
-    console.log(moves)
-    performMoves(moves, 250)
 })
 
 let scheduledMoves = []

@@ -138,7 +138,7 @@ function moveState(state, direction) {
 
 const reversedDir = new Map([["up", "down"],["down", "up"],["left","right"],["right","left"]])
 
-export function AStarManhattan(initialState) {
+function AStarManhattan(initialState) {
     const queue = new MinHeap()
     const stateMap = new Map();
     let targetState = ""
@@ -186,3 +186,11 @@ export function AStarManhattan(initialState) {
     path.reverse()
     return path
 }
+
+self.onmessage = function(e) {
+  const initialState = e.data;
+
+  const path = AStarManhattan(initialState);
+
+  self.postMessage(path);
+};

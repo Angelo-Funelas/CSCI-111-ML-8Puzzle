@@ -138,7 +138,7 @@ function moveState(state, direction) {
 
 const reversedDir = new Map([["up", "down"],["down", "up"],["left","right"],["right","left"]])
 
-export function GreedyEuclidian(initialState) {
+function GreedyEuclidian(initialState) {
     const queue = new MinHeap()
     const stateMap = new Map();
     let targetState = ""
@@ -183,3 +183,11 @@ export function GreedyEuclidian(initialState) {
     path.reverse()
     return path
 }
+
+self.onmessage = function(e) {
+  const initialState = e.data;
+
+  const path = GreedyEuclidian(initialState);
+
+  self.postMessage(path);
+};
