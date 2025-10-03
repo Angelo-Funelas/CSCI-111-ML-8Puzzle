@@ -54,7 +54,7 @@ function shuffleBoard(board) {
 document.getElementById("button-shuffle").addEventListener('click', () => {
     shuffleBoard(mainBoard)
 })
-initBoard(mainBoard, 4)
+initBoard(mainBoard, 3)
 
 const animationDirections = [
     ["", "moveRight", ""],
