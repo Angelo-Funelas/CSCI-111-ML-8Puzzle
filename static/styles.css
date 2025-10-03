@@ -93,7 +93,7 @@ p {
     text-align: center;
 }
 #miku {
-    position: fixed;
+    position: absolute;
     bottom: 2em;
     right: 10em;
     width: 20em;
