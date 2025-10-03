@@ -76,6 +76,7 @@ class MinHeap {
 }
 
 function calcHeuristic(state) {
+    state = state.split(",")
     const size = Math.sqrt(state.length)
     let res = 0
     for (let i=0; i<state.length; i++) {
@@ -105,10 +106,11 @@ function getNextStates(state) {
 }
 
 function moveState(state, direction) {
-    const n = Math.sqrt(state.length);
+    const arr = state.split(","); // split into array of tiles
+    const n = Math.sqrt(arr.length);
     if (!Number.isInteger(n)) throw new Error("State length is not a perfect square!");
 
-    const zeroIndex = state.indexOf("0");
+    const zeroIndex = arr.indexOf("0");
     const row = Math.floor(zeroIndex / n);
     const col = zeroIndex % n;
 
@@ -118,22 +120,20 @@ function moveState(state, direction) {
         case "up":  dr =  1; break;
         case "right":  dc = -1; break;
         case "left": dc =  1; break;
-        default: return null; // invalid direction
+        default: return null;
     }
 
     const newRow = row + dr;
     const newCol = col + dc;
 
-    // Check bounds
     if (newRow < 0 || newRow >= n || newCol < 0 || newCol >= n) {
-        return null;
+        return null; // invalid move
     }
 
     const newIndex = newRow * n + newCol;
-    let arr = state.split("");
     [arr[zeroIndex], arr[newIndex]] = [arr[newIndex], arr[zeroIndex]]; // swap
 
-    return arr.join("");
+    return arr.join(",");
 }
 
 const reversedDir = new Map([["up", "down"],["down", "up"],["left","right"],["right","left"]])
@@ -142,11 +142,10 @@ export function AStar(initialState) {
     const queue = new MinHeap()
     const stateMap = new Map();
     let targetState = ""
-    for (let i=1; i<initialState.length; i++) {
-        targetState += i.toString()
+    for (let i=1; i<initialState.split(",").length; i++) {
+        targetState += `${i},`
     }
     targetState+="0"
-    console.log(targetState)
     function addNode(h, path_cost, state, dir) {
         queue.insert([h+path_cost, state])
         stateMap.set(state, {
@@ -164,8 +163,6 @@ export function AStar(initialState) {
     while (queue.heap.length > 0) {
         const current_node = queue.removeMin()
         const current_state = current_node[1]
-        console.log(`Traversing ${current_state}: ${current_state == targetState}`)
-        console.log(`${queue.heap.length} in queue`)
         if (current_state == targetState) break
         const neighborStates = getNextStates(current_state)
         const path_cost = stateMap.get(current_state).cost
@@ -183,7 +180,6 @@ export function AStar(initialState) {
     while (cur_node.state !== initialState) {
         path.push(cur_node.dir)
         const revDir = reversedDir.get(cur_node.dir)
-        console.log(`${cur_node.state} move ${revDir}`)
         const nextState = moveState(cur_node.state, revDir)
         cur_node = stateMap.get(nextState)
     }

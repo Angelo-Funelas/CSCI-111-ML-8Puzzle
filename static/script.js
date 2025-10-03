@@ -54,7 +54,7 @@ function shuffleBoard(board) {
 document.getElementById("button-shuffle").addEventListener('click', () => {
     shuffleBoard(mainBoard)
 })
-initBoard(mainBoard, 3)
+initBoard(mainBoard, 4)
 
 const animationDirections = [
     ["", "moveRight", ""],
@@ -109,13 +109,13 @@ document.addEventListener("keydown", (e) => {
 })
 
 function stringifyBoard(board) {
-    let current_board_state = ""
+    let current_board_state = []
     for (const row of board) {
         for (const cell of row) {
-            current_board_state += cell.className == "empty" ? "0" : cell.innerText
+            current_board_state.push(cell.className == "empty" ? "0" : cell.innerText)
         }
     }
-    return current_board_state
+    return current_board_state.join(',')
 }
 
 document.getElementById("button-solve").addEventListener("click", (e) => {
