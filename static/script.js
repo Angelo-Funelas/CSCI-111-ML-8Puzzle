@@ -223,7 +223,7 @@ solveButton.addEventListener("click", (e) => {
         setTimeout(() => {
             animateValue(moveStat, moves.length, moves.length*20)
         }, travAnimTime)
-        performMoves(moves, 250)
+        performMoves(moves, Math.max(Math.min(6250/moves.length, 250), 150))
         solveButton.disabled = false
         solveButton.innerText = "Solve"
     }
