@@ -14,9 +14,12 @@
     </div>
     <p>Use Arrow Keys or WASD to move tiles.</p>
     <div id="controls">
+        <input type="text" id="initial-state" placeholder="Initial State (e.g. 630754128)">
         <button id="button-shuffle">Shuffle Board</button>
         <select id="selected-algo">
-            <option value="astar">A* Algorithm</option>
+            <option value="astar-manhattan">A* (Manhattan)</option>
+            <option value="astar-euclidian">A* (Euclidian)</option>
+            <option value="greedy-manhattan">Greedy (Euclidian)</option>
         </select>
         <button id="button-solve">Solve</button>
     </div>

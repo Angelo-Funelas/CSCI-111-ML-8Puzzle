@@ -1,4 +1,6 @@
-import { AStar } from "./AStar.js";
+import { AStarManhattan } from "./AStarManhattan.js";
+import { AStarEuclidian } from "./AStarEuclidian.js";
+import { GreedyManhattan } from "./GreedyManhattan.js";
 
 const mainBoard = document.getElementById("game-board");
 function initBoard(board, count) {
@@ -121,11 +123,20 @@ function stringifyBoard(board) {
 document.getElementById("button-solve").addEventListener("click", (e) => {
     const selected_algorithm = document.getElementById("selected-algo").value
     let current_board_state = stringifyBoard(mainBoard.board)
-    if (selected_algorithm == "astar") {
-        const moves = AStar(current_board_state)
-        console.log(moves)
-        performMoves(moves, 250)
+    let moves = []
+    if (selected_algorithm == "astar-manhattan") {
+        moves = AStarManhattan(current_board_state)
+    } else if (selected_algorithm == "astar-euclidian") {
+        moves = AStarEuclidian(current_board_state)
+    } else if (selected_algorithm == "greedy-manhattan") {
+        moves = GreedyManhattan(current_board_state)
     }
+    if (moves.length < 1) {
+        console.log("No Moves Generated")
+        return
+    }
+    console.log(moves)
+    performMoves(moves, 250)
 })
 
 let scheduledMoves = []
