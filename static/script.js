@@ -124,7 +124,7 @@ document.getElementById("button-solve").addEventListener("click", (e) => {
     if (selected_algorithm == "astar") {
         const moves = AStar(current_board_state)
         console.log(moves)
-        performMoves(moves)
+        performMoves(moves, 250)
     }
 })
 
@@ -143,17 +143,17 @@ function scheduleMove(movex, movey, time) {
     scheduledMoves.push(scheduledMove)
 }
 
-function performMoves(moves) {
+function performMoves(moves, interval) {
     for (let i=0; i<moves.length;i++) {
         const step = moves[i]
         if (step == "up") {
-            scheduleMove(0, 1, i*500)
+            scheduleMove(0, 1, i*interval)
         } else if (step == "down") {
-            scheduleMove(0, -1, i*500)
+            scheduleMove(0, -1, i*interval)
         } else if (step == "left") {
-            scheduleMove(1, 0, i*500)
+            scheduleMove(1, 0, i*interval)
         } else if (step == "right") {
-            scheduleMove(-1, 0, i*500)
+            scheduleMove(-1, 0, i*interval)
         }
     }
 }
