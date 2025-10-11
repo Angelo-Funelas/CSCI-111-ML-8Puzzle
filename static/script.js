@@ -291,7 +291,10 @@ function setBoardState(board, state) {
         }
         board.board.push(row)
     }
-
+    
+    const board_row_count = board.board.length
+    const board_col_count = board.board[0].length
+    const distColoring = document.getElementById("dist-color").checked
     for (let i=0; i<state.length; i++) {
         const cell = state[i]
         const row = Math.floor(i/size)
@@ -302,7 +305,15 @@ function setBoardState(board, state) {
             tile.className = "empty"
         } else {
             tile.innerText = cell
+            if (distColoring) {
+                const num = cell-1
+                const target_row = Math.floor(num/board_col_count)
+                const target_col = num%board_col_count
+                const maxDist = (board_col_count-1)+(board_row_count-1)
+                tile.style.backgroundColor = `${manhattanColor(row, col, target_row, target_col, maxDist)}`
+            }
         }
+        
         board.board[row][col] = tile
         tile.style.gridArea = `${row+1} / ${col+1}`
         board.append(tile);
