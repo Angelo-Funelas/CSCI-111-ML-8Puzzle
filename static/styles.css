@@ -85,6 +85,7 @@ button,select,input,label {
     background-color: #ececec;
     margin: .2em;
     font-size: 1rem;
+    box-shadow:  0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 button:hover {
     background-color: #e5e5e5;
@@ -95,8 +96,9 @@ p {
 #miku {
     position: absolute;
     bottom: 2em;
-    right: 10em;
+    right: 4em;
     width: 20em;
+    z-index: -1;
 }
 #statistics {
     margin: 0 auto;
