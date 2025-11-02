@@ -68,8 +68,6 @@ class Queue {
 
 const GOAL_STATE = ["1", "2", "3", "4", "5", "6", "7", "8", "0"]
 
-let adj = Array.from({ length: 9 }, () => []);
-
 function valid(i) {
   return i >= 0 && i < 9;
 }
