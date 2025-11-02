@@ -40,29 +40,8 @@ class Queue {
     return value;
   }
 
-  peek() {
-    if (this.empty()) {
-      return "Queue is empty";
-    }
-    return this.front.value;
-  }
-
   empty() {
     return this.front === null;
-  }
-
-  size() {
-    return this.size;
-  }
-
-  print() {
-    let current = this.front;
-    const elements = [];
-    while (current) {
-      elements.push(current.value);
-      current = current.next;
-    }
-    console.log(elements);
   }
 }
 
