@@ -162,8 +162,41 @@ function BFS(initialState) {
     currState = res[1].get(currState);
   }
   path.reverse();
+  
+  let moves = [];
+  let currentMoveIdx = -1;
+  let nextMoveIdx = 0;
+  while (nextMoveIdx < path.length) {
+    let curr = null;
+    if (currentMoveIdx === -1) {
+      curr = initialState.split(",");
+    } else {
+      curr = path[currentMoveIdx].split(",");
+    }
+
+    let next = path[nextMoveIdx].split(",");
+    let currZeroIdx = curr.indexOf("0");
+    let nextZeroIdx = next.indexOf("0");
+    if (nextZeroIdx > currZeroIdx) {
+      if (nextZeroIdx-currZeroIdx === 3) {
+        moves.push("up");
+      } else {
+        moves.push("left");
+      }
+    } else {
+      if (currZeroIdx-nextZeroIdx === 3) {
+        moves.push("down");
+      } else {
+        moves.push("right");
+      }
+    }
+
+    currentMoveIdx++;
+    nextMoveIdx++;
+  }
+
   const timeFinish = new Date();
-  return [path, res[2], (timeFinish-timeStart)];
+  return [moves, res[2], (timeFinish-timeStart)];
 }
 
 self.onmessage = function(e) {
@@ -172,4 +205,4 @@ self.onmessage = function(e) {
   const res = BFS(initialState);
 
   self.postMessage(res);
-}
+};
