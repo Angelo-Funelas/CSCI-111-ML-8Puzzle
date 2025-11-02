@@ -188,6 +188,8 @@ solveButton.addEventListener("click", (e) => {
         algoWorker = new Worker("/static/GreedyManhattan.js")
     } else if (selected_algorithm == "greedy-euclidian") {
         algoWorker = new Worker("/static/GreedyEuclidian.js")
+    } else if (selected_algorithm == "bfs") {
+        algoWorker = new Worker("/static/BFS.js")
     }
     if (!algoWorker) return
     cancelMoves()
