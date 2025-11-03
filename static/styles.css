@@ -100,6 +100,13 @@ p {
     width: 20em;
     z-index: -1;
 }
+#oshawott {
+    position: absolute;
+    bottom: 1em;
+    left: 4em;
+    width: 20em;
+    z-index: -1;
+}
 #statistics {
     margin: 0 auto;
     width: 25rem;
