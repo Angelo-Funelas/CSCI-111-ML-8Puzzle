@@ -65,19 +65,13 @@ function solve(initialState) {
   while (!q.empty()) {
     traversed++;
     currentState = q.front.value.split(",");
-
     if (currentState.every((val, idx) => val === GOAL_STATE[idx])) {
       break;
     }
+
     q.pop();
 
-    let zeroIdx = -1;
-    for (let i = 0; i < 9; i++) {
-      if (currentState[i] === "0") {
-        zeroIdx = i;
-        break;
-      }
-    }
+    let zeroIdx = currentState.indexOf("0"); 
 
     nextStates = []
     for (let i = 0; i < 4; i++) {
