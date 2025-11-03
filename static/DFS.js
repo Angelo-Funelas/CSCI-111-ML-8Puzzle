@@ -85,8 +85,6 @@ function DFS(initialState) {
     res = solve(initialState, depth, 0, []);
   }
 
-  console.log(res[1]);
-
   console.log("Backtracking Path...");
   let moves = [];
   let currentMoveIdx = -1;
