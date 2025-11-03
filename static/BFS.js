@@ -128,10 +128,16 @@ function solve(initialState) {
 function BFS(initialState) {
   const timeStart = new Date();
 
+  let initialStateArr = initialState.split(",");
   console.log("Performing Traversal...");
   const res = solve(initialState);
 
   console.log("Backtracking Path...");
+  if (initialStateArr.every((val, idx) => val === GOAL_STATE[idx])) {
+    const timeFinish = new Date();
+    return [[], res[2], (timeFinish-timeStart)];
+  }
+
   let path = [GOAL_STATE.toString()];
   let currState = res[1].get(GOAL_STATE.toString());
   while (currState !== initialState) {
