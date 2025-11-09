@@ -17,12 +17,12 @@
         <input type="text" id="initial-state" placeholder="Initial State (e.g. 6,3,0,7,5,4,1,2,8)"><button id="button-initialize">Initialize</button><br>
         <button id="button-shuffle">Shuffle Board</button>
         <select id="selected-algo">
+            <option value="bfs">BFS</option>
+            <option value="dfs">DFS</option>
             <option value="astar-manhattan">A* (Manhattan)</option>
             <option value="astar-euclidian">A* (Euclidian)</option>
             <option value="greedy-manhattan">Greedy (Manhattan)</option>
             <option value="greedy-euclidian">Greedy (Euclidian)</option>
-            <option value="bfs">BFS</option>
-            <option value="dfs">DFS</option>
         </select>
         <button id="button-solve">Solve</button>
         <label for="dist-color">Distance Coloring<input type="checkbox" name="dist-color" id="dist-color"></label>
