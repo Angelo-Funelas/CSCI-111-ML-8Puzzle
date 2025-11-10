@@ -66,7 +66,7 @@ function solve(currState, maxDepth, currDepth, path) {
       let nextDepth = currDepth+1;
       solve(state.toString(), maxDepth, nextDepth, path);
       path.pop(); 
-
+      used.set(state.toString(), undefined);
       if (solved) return ans;
     }
   }
